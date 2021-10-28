@@ -7,7 +7,7 @@ After you done that, you can execute this command: `calculate --help`
 For more informations, read our docs.
 
 # Dependencies
-> `Debian or Ubuntu`
+> `Debian or Ubuntu` \n
 > `perl`
 
 # Support <3
