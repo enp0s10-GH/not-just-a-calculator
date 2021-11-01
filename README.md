@@ -9,6 +9,6 @@ For more informations, read our docs at https://njac.enforcerdev.de/
 > `Debian or Ubuntu`<br>
 > `perl`
 # Support <3
-You found <b>bugs</b>, or you have <b>any suggestions</b>? leave a comment or send me an email (support@dev-hub.de)
+You found <b>bugs</b>, or you have <b>any suggestions</b>? leave a comment or send me an email (support@enforcerdev.de)
 
 # I hope the script can help you.
