@@ -13,29 +13,29 @@ re="^[0-9][.]{0,1}[0-9]*$"
 
 for file in $files;
 do
-chmod +x functions/"${file}"
-source functions/"${file}"
+    chmod +x functions/"${file}"
+    source functions/"${file}"
 done;
 
 
 arg_length=$#
 if [[ $arg_length == "1" ]] 
 then
-arg1=$1;
-case ${arg1} in
--s) simple;;
--simple) simple;;
--medium) medium;;
--m) medium;;
--a) advanced;;
--advanced) advanced;;
---help)display_help;;
--h)display_help;;
---version) display_version;;
--v) display_version;;
-*) echo -e "${BRed}Invalid Parameters found. Please use ${Color_Off}--help.";;
-esac
+    arg1=$1;
+    case ${arg1} in
+        -s) simple;;
+        -simple) simple;;
+        -medium) medium;;
+        -m) medium;;
+        -a) advanced;;
+        -advanced) advanced;;
+        --help)display_help;;
+        -h)display_help;;
+        --version) display_version;;
+        -v) display_version;;
+        *) echo -e "${BRed}Invalid Parameters found. Please use ${Color_Off}--help.";;
+    esac
 else 
-echo -e "${BRed}too much paramaters. use ${BWhite}--help${Color_Off}"
+    echo -e "${BRed}too much paramaters. use ${BWhite}--help${Color_Off}"
 fi
 
