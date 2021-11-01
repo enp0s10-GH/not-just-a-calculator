@@ -1,370 +1,65 @@
 #!/bin/bash
+#
+# A Calculator, for Binary, Hexadecimal, decimal, text converting and normal calculating
+
+########################################
+# Declaring all variables
+########################################
+files=$(ls functions)
 export LANG=de_DE.UTF-8
 export LC_ALL=de_DE.UTF8
-Color_Off='\033[0m';
-Purple='\033[0;35m';
-BRed='\033[1;31m';
-BGreen='\033[1;32m';
-BCyan='\033[1;36m';
-BWhite='\033[1;37m';
-re="^[0-9][.]{0,1}[0-9]*$"
-function simple() {
+re='^[0-9][.]{0,1}[0-9]*$'
 
-clear;
-echo -e -n "${BCyan}Erste Zahl: ${Purple}"; read -r number1; echo -n -e "${Color_Off}";
-echo -e -n "${BCyan}Operator: ${Purple}"; read -r operator; echo -n -e "${Color_Off}";
-echo -e -n "${BCyan}Zweite Zahl: ${Purple}"; read -r number2; echo -n -e "${Color_Off}";
-calculate "${number1}" "${operator}" "${number2}";
+########################################
+# Get all files in functions directory and sourcing them
+########################################
+for file in $files; do
+  chmod +x functions/"${file}"
+  source functions/"${file}"
+done;
 
-}
-
-function contains() {
-STR="${1}"
-SUB="${2}"
-if [[ "$STR" == *"$SUB"* ]]; then
-echo 1
-fi
-}
-
-function add() {
-IFS='+'
-read -r -a strarr <<< "${calc}"
-unset IFS
-n1="${strarr[0]}"
-n2="${strarr[1]}"
-if [[ $n1 =~ $re ]] && [[ $n2 =~ $re ]]
-then
-echo -en "\rNeuberechnung der Matrix."
-sleep .8
-echo -en "\rNeuberechnung der Matrix.."
-sleep .8
-echo -en "\rNeuberechnung der Matrix..."
-sleep .8
-tput rc;tput el
-clear
-echo -en "\r${BWhite}Das Ergebnis ist: ${Purple}"; echo -n $((n1+n2)); echo -e "${Color_Off}";
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-
-function subtract() {
-IFS='-'
-read -r -a strarr <<< "${calc}"
-unset IFS
-n1="${strarr[0]}"
-n2="${strarr[1]}"
-if [[ $n1 =~ $re ]] && [[ $n2 =~ $re ]]
-then
-echo -en "\rNeuberechnung der Matrix."
-sleep .8
-echo -en "\rNeuberechnung der Matrix.."
-sleep .8
-echo -en "\rNeuberechnung der Matrix..."
-sleep .8
-tput rc;tput el
-clear
-echo -en "\r${BWhite}Das Ergebnis ist: ${Purple}"; echo -n $((n1-n2)); echo -e "${Color_Off}";
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-function multiply() {
-IFS='*'
-read -r -a strarr <<< "${calc}"
-unset IFS
-n1="${strarr[0]}"
-n2="${strarr[1]}"
-if [[ $n1 =~ $re ]] && [[ $n2 =~ $re ]]
-then
-echo -en "\rNeuberechnung der Matrix."
-sleep .8
-echo -en "\rNeuberechnung der Matrix.."
-sleep .8
-echo -en "\rNeuberechnung der Matrix..."
-sleep .8
-tput rc;tput el
-clear
-echo -en "\r${BWhite}Das Ergebnis ist: ${Purple}"; echo -n $((n1*n2)); echo -e "${Color_Off}";
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-
-function divide() {
-IFS='/'
-read -r -a strarr <<< "${calc}"
-unset IFS
-n1="${strarr[0]}"
-n2="${strarr[1]}"
-if [[ $n1 =~ $re ]] && [[ $n2 =~ $re ]]
-then
-echo -en "\rNeuberechnung der Matrix."
-sleep .8
-echo -en "\rNeuberechnung der Matrix.."
-sleep .8
-echo -en "\rNeuberechnung der Matrix..."
-sleep .8
-tput rc;tput el
-clear
-echo -en "\r${BWhite}Das Ergebnis ist: ${Purple}"; echo -n $((n1/n2)); echo -e "${Color_Off}";
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-
-function mod() {
-IFS='%'
-read -r -a strarr <<< "${calc}"
-unset IFS
-n1="${strarr[0]}"
-n2="${strarr[1]}"
-if [[ $n1 =~ $re ]] && [[ $n2 =~ $re ]]
-then
-echo -en "\rNeuberechnung der Matrix."
-sleep .8
-echo -en "\rNeuberechnung der Matrix.."
-sleep .8
-echo -en "\rNeuberechnung der Matrix..."
-sleep .8
-tput rc;tput el
-clear
-echo -en "\r${BWhite}Das Ergebnis ist: ${Purple}"; echo -n $((n1%n2)); echo -e "${Color_Off}";
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-
-function medium() {
-clear;
-echo -n -e "${BWhite}Gib deine Rechnung an: ${Purple}";
-read -r calculation
-calc=$(echo "${calculation}" | tr -d ' ')
-if [[ $(contains "${calc}" "+") == "1" ]]
-then
-add
-elif [[ $(contains "${calc}" "-") == "1" ]]
-then
-subtract
-elif [[ $(contains "${calc}" "*") == "1" ]]
-then
-multiply
-elif [[ $(contains "${calc}" "/") == "1" ]]
-then
-divide
-elif [[ $(contains "${calc}" "%") == "1" ]]
-then
-mod
-else
-echo -e "${BWhite}Falsche Rechenoperation, Verfügbar sind: ( ${BGreen}+ ${Color_Off}| ${BGreen}- ${Color_Off}| ${BGreen}* ${Color_Off}| ${BGreen}/ ${Color_Off}| ${BGreen}% ${BWhite})"
-fi
-}
-
-
-#function to convert decimal, binary, hexadecimal and ascii. param : -a || -advanced ##
-
-function advanced() {
-clear;
-echo -e "${BWhite}What do you want to convert?";
-echo -e "${BWhite} [${BGreen}1${BWhite}] ${Color_Off}- ${BWhite}Binary";
-echo -e "${BWhite} [${BGreen}2${BWhite}] ${Color_Off}- ${BWhite}Decimal";
-echo -e "${BWhite} [${BGreen}3${BWhite}] ${Color_Off}- ${BWhite}Hexadecimal";
-echo -e "${BWhite} [${BGreen}4${BWhite}] ${Color_Off}- ${BWhite}Text";
-echo ">---------------------------<"
-echo -e -n "${BWhite} > "; read -r convertfrom;
-if [[ "${convertfrom}" == "1" ]]
-then
-clear
-echo -e "${BCyan}Convert From: Binary"
-echo -e "${BWhite}Enter your Binary value: ${Purple}";
-echo -e -n "${BWhite} > "; read -r binary_value
-if [[ $binary_value =~ ^[0-1]+$ ]]
-then
-clear
-echo -e "${BCyan}Convert From: Binary"
-echo -e "${BCyan}Value: ${binary_value}"
-echo -e "${BWhite}and what do you want to convert into?"
-echo -e "${BWhite} [${BGreen}1${BWhite}] ${Color_Off}- ${BWhite}Decimal";
-echo -e "${BWhite} [${BGreen}2${BWhite}] ${Color_Off}- ${BWhite}Hexadecimal";
-echo -e "${BWhite} [${BGreen}3${BWhite}] ${Color_Off}- ${BWhite}Text";
-echo ">---------------------------<"
-echo -e -n "${BWhite} > "; read -r convert_type
-clear
-echo -e "${BCyan}Convert From: Binary"
-echo -e "${BCyan}Value: ${binary_value} "
-if [[ $convert_type == "1" ]]
-then
-echo -e "${BCyan}Convert Into: Decimal"
-elif [[ $convert_type == "2" ]]
-then
-echo -e "${BCyan}Convert Into: Hexadecimal"
-elif [[ $convert_type == "3" ]]
-then
-echo -e "${BCyan}Convert Into: Text"
-else
-echo -e "${BRed}This is not a valid number. available are 1, 2, and 3"
-fi
-case "${convert_type}" in
-1) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "$((2#${binary_value}))" ;;
-2) echo -n -e "${Color_Off}The result is: ${BGreen}";printf '%x\n' "$((2#$binary_value))" ;;
-3) echo -n -e "${Color_Off}The result is: ${BGreen}";echo "${binary_value}" | perl -lape '$_=pack"(B8)*",@F' ;;
-esac
-else
-echo -e "${BRed} ${binary_value}is not a valid binary value, try again."
+########################################
+# Checking the Command Parameters, and handling them
+########################################
+arg_length=$#
+if [[ $arg_length == '1' ]]; then
+  arg1=$1;
+  case ${arg1} in
+    -s) 
+      simple
+      ;;
+    -simple) 
+      simple
+      ;;
+    -medium) 
+      medium
+      ;;
+    -m) 
+      medium
+      ;;
+    -a) 
+      advanced
+      ;;
+    -advanced) 
+      advanced
+      ;;
+    --help)
+      display_help
+      ;;
+    -h)
+      display_help
+      ;;
+    --version) 
+      display_version
+      ;;
+    -v) 
+      display_version
+      ;;
+    *) 
+      echo -e "${BRed}Invalid Parameters found. Please use ${Color_Off}--help."
+      ;;
+  esac
+else 
+  echo -e "${BRed}too much paramaters. use ${BWhite}--help${Color_Off}"
 fi
 
-elif [[ "${convertfrom}" == "2" ]]
-then
-clear
-echo -e "${BCyan}Convert From: Decimal"
-echo -e "${BWhite}Enter your Decimal value: ${Purple}";
-echo -e -n "${BWhite} > "; read -r decimal_value
-if [[ "${decimal_value}" =~ $re ]]
-then
-clear
-echo -e "${BCyan}Convert From: Decimal"
-echo -e "${BCyan}Value: ${decimal_value}"
-echo -e "${BWhite}and what do you want to convert into?"
-echo -e "${BWhite} [${BGreen}1${BWhite}] ${Color_Off}- ${BWhite}Binary";
-echo -e "${BWhite} [${BGreen}2${BWhite}] ${Color_Off}- ${BWhite}Hexadecimal";
-echo -e "${BWhite} [${BGreen}3${BWhite}] ${Color_Off}- ${BWhite}Text";
-echo ">---------------------------<"
-echo -e -n "${BWhite} > "; read -r convert_type
-clear
-echo -e "${BCyan}Convert From: Decimal"
-echo -e "${BCyan}Value: ${decimal_value}"
-if [[ "${convert_type}" == "1" ]]
-then
-echo -e "${BCyan}Convert Into: Binary"
-elif [[ "${convert_type}" == "2" ]]
-then
-echo -e "${BCyan}Convert Into: Hexadecimal"
-elif [[ "${convert_type}" == "3" ]]
-then
-echo -e "${BCyan}Convert Into: Text"
-else
-echo -e "${BRed}This is not a valid number. available are 1, 2, and 3"
-fi
-case "${convert_type}" in
-1) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "obase=2;${decimal_value}" | bc ;;
-2) echo -n -e "${Color_Off}The result is: ${BGreen}"; printf '%x\n' "${decimal_value}" ;;
-3) echo -n -e "${Color_Off}The result is: ${BGreen}"; printf '%s' "$(printf '\\%03o' "${decimal_value}")"; ;;
-esac
-else
-echo -e "${BRed} ${decimal_value} is not a valid decimal value, try again."
-fi
-
-elif [ "${convertfrom}" == "3" ]
-then
-clear
-echo -e "${BCyan}Convert From: Hexadecimal"
-echo -e "${BWhite}Enter your Hexadecimal value: ${Purple}";
-echo -e -n "${BWhite} > "; read -r hex_value
-clear
-echo -e "${BCyan}Convert From: Hexadecimal"
-echo -e "${BCyan}Value: ${hex_value}"
-echo -e "${BWhite}and what do you want to convert into?"
-echo -e "${BWhite} [${BGreen}1${BWhite}] ${Color_Off}- ${BWhite}Binary";
-echo -e "${BWhite} [${BGreen}2${BWhite}] ${Color_Off}- ${BWhite}Decimal";
-echo -e "${BWhite} [${BGreen}3${BWhite}] ${Color_Off}- ${BWhite}Text";
-echo ">---------------------------<"
-echo -e -n "${BWhite} > "; read -r convert_type
-clear
-echo -e "${BCyan}Convert From: Hexadecimal"
-echo -e "${BCyan}Value: ${hex_value}"
-if [[ "${convert_type}" == "1" ]]
-then
-echo -e "${BCyan}Convert Into: Binary"
-elif [[ "${convert_type}" == "2" ]]
-then
-echo -e "${BCyan}Convert Into: Decimal"
-elif [[ "${convert_type}" == "3" ]]
-then
-echo -e "${BCyan}Convert Into: Text"
-else
-echo -e "${BRed}This is not a valid number. available are 1, 2, and 3"
-fi
-result_hex_text=$(echo "${hex_value}" | xxd -r -p)
-if [[ $result_hex_text =~ ^[^[:cntrl:]]*$ ]]
-then
-case "${convert_type}" in
-1) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "ibase=16;obase=2;${hex_value}"|bc;;
-2) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo $((16#${hex_value}));;
-3) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "$result_hex_text";;
-esac
-else
-echo -e "${BRed}This Hexadecimal Value can not be convertet into an Text."
-fi
-elif [ "${convertfrom}" == "4" ]
-then
-clear
-echo -e "${BCyan}Convert From: Text"
-echo -e "${BWhite}Enter your Text: ${Purple}";
-echo -e -n "${BWhite} > "; read -r text
-clear
-echo -e "${BCyan}Convert From: Text"
-echo -e "${BCyan}Value: ${text}"
-echo -e "${BWhite}and what do you want to convert into?"
-echo -e "${BWhite} [${BGreen}1${BWhite}] ${Color_Off}- ${BWhite}Binary";
-echo -e "${BWhite} [${BGreen}2${BWhite}] ${Color_Off}- ${BWhite}Decimal";
-echo -e "${BWhite} [${BGreen}3${BWhite}] ${Color_Off}- ${BWhite}Hexadecimal";
-echo ">---------------------------<"
-echo -e -n "${BWhite} > "; read -r convert_type
-clear
-echo -e "${BCyan}Convert From: Text"
-echo -e "${BCyan}Value: ${text}"
-if [[ "${convert_type}" == "1" ]]
-then
-echo -e "${BCyan}Convert Into: Binary"
-elif [[ "${convert_type}" == "2" ]]
-then
-echo -e "${BCyan}Convert Into: Decimal"
-elif [[ "${convert_type}" == "3" ]]
-then
-echo -e "${BCyan}Convert Into: Hexadecimal"
-else
-echo -e "${BRed}This is not a valid number. available are 1, 2, and 3"
-fi
-case "${convert_type}" in
-1) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "${text}" | perl -lpe '$_=join " ", unpack"(B8)*"' ;;
-2) echo -n -e "${Color_Off}The result is: ${BGreen}"; printf '%d' "'${text}"; echo "" ;;
-3) echo -n -e "${Color_Off}The result is: ${BGreen}"; echo "${text}" | xxd -ps -c 200; ;;
-esac
-else
-echo -e "${BRed}This is not a valid number. available are 1, 2, 3 and 4."
-fi
-}
-#Calculate Function
-
-function calculate() {
-num1=$1;
-op=$2;
-num2=$3;
-if [[ $num1 =~ $re ]] && [[ $num2 =~ $re ]]
-then
-case $op in
-"+") echo -e -n "${BWhite}Das Ergebnis ist: "; echo -e -n "${BGreen}";echo $((num1+num2));;
-"-") echo -e -n "${BWhite}Das Ergebnis ist: "; echo -e -n "${BGreen}";echo $((num1-num2));;
-"/") echo -e -n "${BWhite}Das Ergebnis ist: "; echo -e -n "${BGreen}";echo $((num1/num2));;
-"*") echo -e -n "${BWhite}Das Ergebnis ist: "; echo -e -n "${BGreen}";echo $((num1*num2));;
-"%") echo -e -n "${BWhite}Das Ergebnis ist: "; echo -e -n "${BGreen}";echo $((num1%num2));;
-*) echo -e "${BWhite}Falsche Rechenoperation ${BRed}${op}${BWhite} Verfügbar sind: ( ${BGreen}+ ${Color_Off}| ${BGreen}- ${Color_Off}| ${BGreen} ${Color_Off}| ${BGreen}/ ${Color_Off}| ${BGreen}% ${BWhite})";;
-esac
-else
-echo -e "${BRed}Das sind keine Zahlen. ( ͡❛  ͟ʖ ͡❛)"
-fi
-}
-arg1=$1;
-
-if [ "$arg1" == "-s" ] || [ "$arg1" == "-simple" ]
-then
-simple
-elif [ "$arg1" == "-m" ] || [ "$arg1" == "-medium" ]
-then
-medium
-elif [ "$arg1" == "-a" ] || [ "$arg1" == "-advanced" ]
-then
-advanced
-else
-simple
-fi
