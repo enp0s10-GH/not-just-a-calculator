@@ -1,41 +1,43 @@
 #!/bin/bash
+#
+# A Calculator, for Binary, Hexadecimal, decimal, text converting and normal calculating
 
+########################################
+# Declaring all variables
+########################################
 files=$(ls functions)
 export LANG=de_DE.UTF-8
 export LC_ALL=de_DE.UTF8
-Color_Off='\033[0m';
-Purple='\033[0;35m';
-BRed='\033[1;31m';
-BGreen='\033[1;32m';
-BCyan='\033[1;36m';
-BWhite='\033[1;37m';
-re="^[0-9][.]{0,1}[0-9]*$"
-
-for file in $files;
-do
-    chmod +x functions/"${file}"
-    source functions/"${file}"
+re='^[0-9][.]{0,1}[0-9]*$'
+########################################
+# Get all files in functions directory and sourcing them
+########################################
+for file in $files; do
+  chmod +x functions/"${file}"
+  source functions/"${file}"
 done;
 
 
+########################################
+# Checking the Command Parameters, and handling them
+########################################
 arg_length=$#
-if [[ $arg_length == "1" ]] 
-then
-    arg1=$1;
-    case ${arg1} in
-        -s) simple;;
-        -simple) simple;;
-        -medium) medium;;
-        -m) medium;;
-        -a) advanced;;
-        -advanced) advanced;;
-        --help)display_help;;
-        -h)display_help;;
-        --version) display_version;;
-        -v) display_version;;
-        *) echo -e "${BRed}Invalid Parameters found. Please use ${Color_Off}--help.";;
-    esac
+if [[ $arg_length == '1' ]]; then
+  arg1=$1;
+  case ${arg1} in
+    -s) simple;;
+    -simple) simple;;
+    -medium) medium;;
+    -m) medium;;
+    -a) advanced;;
+    -advanced) advanced;;
+    --help)display_help;;
+    -h)display_help;;
+    --version) display_version;;
+    -v) display_version;;
+    *) echo -e "${BRed}Invalid Parameters found. Please use ${Color_Off}--help.";;
+  esac
 else 
-    echo -e "${BRed}too much paramaters. use ${BWhite}--help${Color_Off}"
+  echo -e "${BRed}too much paramaters. use ${BWhite}--help${Color_Off}"
 fi
 
